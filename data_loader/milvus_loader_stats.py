@@ -31,7 +31,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 MILVUS_HOST = "localhost"
 MILVUS_PORT = "19530"
 BASE_COLLECTION_NAME = "NewsArticle"
-CSV_FILE = "data_loader_stats.csv"
+CSV_FILE = "milvus_data_loader_stats.csv"
 
 # Dynamic options
 # This is the only thing that is different rom milvus_data_loader.py

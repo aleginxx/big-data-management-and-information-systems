@@ -16,7 +16,7 @@ import string
 from weaviate.classes.config import Configure, Property, DataType, VectorDistances
 
 # Dynamic options (same as Milvus loader)
-CSV_FILE = "data_loader_stats.csv"
+CSV_FILE = "weaviate_data_loader_stats.csv"
 BASE_NAME = "NewsArticle"
 BATCH_SIZES = [4, 8, 16, 32, 128]
 METRICS = {
