@@ -26,21 +26,6 @@ The project is structured around **two types of experiments**:
 
 ---
 
-## 📂 Repository Structure
-
-```
-data_loader/
-│
-├── milvus_data_loader.py         # Loads Hugging Face dataset, generates embeddings, inserts into Milvus
-├── weaviate_data_loader.py       # Same as above, but for Weaviate
-│
-├── milvus_loader_stats.py        # Generates random vectors, benchmarks Milvus insertion performance
-├── weaviate_loader_stats.py      # Same as above, but for Weaviate
-│
-├── drop_collections.py           # Utility to drop Milvus or Weaviate collections
-└── plots/                        # Benchmarking results and visualizations
-```
-
 ---
 
 ## ⚙️ Setup Instructions
@@ -68,13 +53,12 @@ docker run -d --name milvus   -p 19530:19530   -p 9091:9091   milvusdb/milvus:la
 
 #### Weaviate
 ```bash
-docker pull semitechnologies/weaviate:latest
-docker run -d --name weaviate   -p 8080:8080   -e AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true   -e PERSISTENCE_DATA_PATH="/var/lib/weaviate"   semitechnologies/weaviate:latest
+docker run -p 8080:8080 -p 50051:50051 cr.weaviate.io/semitechnologies/weaviate:1.32.8
 ```
 
 ---
 
-## ▶Running the Scripts
+## Running the Scripts
 
 ### Load real embeddings
 ```bash
