@@ -38,11 +38,11 @@ CSV_FILE = "milvus_data_loader_stats.csv"
 BATCH_SIZES = [4, 8, 16, 32, 128]
 #BATCH_SIZES = [128]
 #METRICS = ["L2", "COSINE", "IP"]
-METRICS = ["COSINE"]
+METRICS = ["IP"]
 #VECTOR_DIMS = [32, 64, 128, 384]
 VECTOR_DIMS = [384]
 #VECTOR_SUBSETS = [1000, 5000]
-VECTOR_SUBSETS = [5000]
+VECTOR_SUBSETS = [1000]
 NUM_THREADS = [1, 2, 4, 10]
 CATEGORIES = ["sports", "politics", "tech", "finance"]  
 
