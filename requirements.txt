@@ -1,5 +1,10 @@
-weaviate-client==4.6.3
-torch>=2.0.0
-transformers>=4.35.0
-datasets>=2.15.0
-tqdm>=4.66.0
+numpy<2
+pandas
+psutil
+pymilvus>=2.4.0
+weaviate-client>=4.5.5
+datasets
+transformers
+sentence-transformers
+torch
+tqdm
