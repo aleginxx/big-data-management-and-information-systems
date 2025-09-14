@@ -36,20 +36,25 @@ CSV_FILE = "milvus_data_loader_stats.csv"
 # Dynamic options
 # This is the only thing that is different rom milvus_data_loader.py
 BATCH_SIZES = [4, 8, 16, 32, 128]
-METRICS = ["L2", "COSINE", "IP"]
-VECTOR_DIMS = [32, 64, 128, 384]
+#BATCH_SIZES = [128]
+#METRICS = ["L2", "COSINE", "IP"]
+METRICS = ["COSINE", "IP"]
+#VECTOR_DIMS = [32, 64, 128, 384]
+VECTOR_DIMS = [384]
 VECTOR_SUBSETS = [1000, 5000]
 NUM_THREADS = [1, 2, 4, 10]
 CATEGORIES = ["sports", "politics", "tech", "finance"]  
 
 # Log output to data_loader_stats.csv
-with open(CSV_FILE, "w", newline="", encoding="utf-8") as f:
+file_exists = os.path.isfile(CSV_FILE)
+with open(CSV_FILE, "a", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    writer.writerow([
-        "DB", "Collection", "Metric", "VectorDim", "NumVectors", "BatchID",
-        "BatchSize", "ThreadCount", "BatchTime(s)", "TotalInsertedSoFar",
-        "TotalTimeElapsed(s)", "CPU(%)", "Memory(MB)"
-    ])
+    if not file_exists:
+        writer.writerow([
+            "DB", "Collection", "Metric", "VectorDim", "NumVectors", "BatchID",
+            "BatchSize", "BatchTime(s)", "TotalInsertedSoFar", "TotalTimeElapsed(s)",
+            "CPU(%)", "Memory(MB)", "ThreadCount"
+        ])
 
 # Log CPU & memory usage
 def get_resource_usage():

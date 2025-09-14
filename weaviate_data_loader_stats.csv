@@ -1,1 +1,0 @@
-DB,Collection,Metric,VectorDim,NumVectors,BatchID,BatchSize,BatchTime(s),TotalInsertedSoFar,TotalTimeElapsed(s),CPU(%),Memory(MB),ThreadCount

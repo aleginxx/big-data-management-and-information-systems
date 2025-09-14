@@ -24,20 +24,21 @@ METRICS = {
     "L2": VectorDistances.L2_SQUARED,
     "DOT": VectorDistances.DOT
 }
-#VECTOR_DIMS = [32, 64, 128, 384]
-VECTOR_DIMS = [32]
+VECTOR_DIMS = [32, 64, 128, 384]
 VECTOR_SUBSETS = [1000, 5000]
 NUM_THREADS = [1, 2, 4, 10]
 CATEGORIES = ["sports","politics","tech","finance"]
 
 # Log output to data_loader_stats.csv
-with open(CSV_FILE, "w", newline="", encoding="utf-8") as f:
+file_exists = os.path.isfile(CSV_FILE)
+with open(CSV_FILE, "a", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    writer.writerow([
-        "DB", "Collection", "Metric", "VectorDim", "NumVectors", "BatchID",
-        "BatchSize", "BatchTime(s)", "TotalInsertedSoFar", "TotalTimeElapsed(s)",
-        "CPU(%)", "Memory(MB)", "ThreadCount"
-    ])
+    if not file_exists:
+        writer.writerow([
+            "DB", "Collection", "Metric", "VectorDim", "NumVectors", "BatchID",
+            "BatchSize", "BatchTime(s)", "TotalInsertedSoFar", "TotalTimeElapsed(s)",
+            "CPU(%)", "Memory(MB)", "ThreadCount"
+        ])
 
 # Log CPU & memory usage
 def get_resource_usage():
@@ -126,16 +127,10 @@ for dim in VECTOR_DIMS:
                         print(f"[{coll_name}] Batch {i//batch_size + 1} inserted in {batch_time:.3f}s | "
                               f"CPU: {cpu:.1f}% | Mem: {mem:.1f}MB | Threads: {thread_count}")
 
-                        # Log per batch
-                        file_exists = os.path.isfile(CSV_FILE)
-                        with open(CSV_FILE, "a", newline="", encoding="utf-8") as f:
-                            writer = csv.writer(f)
-                            if not file_exists:
-                                writer.writerow([
-                                    "DB", "Collection", "Metric", "VectorDim", "NumVectors", "BatchID",
-                                    "BatchSize", "BatchTime(s)", "TotalInsertedSoFar", "TotalTimeElapsed(s)",
-                                    "CPU(%)", "Memory(MB)", "ThreadCount"
-                                ])
+                        # Log per batch 
+                        with open(CSV_FILE, "a", newline="", encoding="utf-8") as f: 
+                            writer = csv.writer(f) 
+                            writer.writerow([ "Weaviate", coll_name, metric_name, dim, num_vectors, i//batch_size + 1, len(batch_vectors), f"{batch_time:.3f}", total_inserted, f"{end_batch - start_total:.3f}", f"{cpu:.1f}", f"{mem:.1f}", thread_count ])
 
                 print(f"Average batch time: {np.mean(batch_times):.3f}s for collection '{coll_name}'")
                 print(f"Total vectors inserted: {total_inserted}")
