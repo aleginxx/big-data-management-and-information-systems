@@ -33,7 +33,7 @@ palette = {
     "Weaviate": "#c08fa0"
 }
 
-# ---------------- Plot 1: Avg Latency vs Workload ----------------
+# Plot 1: Avg Latency vs Workload
 plt.figure(figsize=(10,6))
 sns.barplot(data=df, x="Workload", y="AvgLatency(ms)", hue="DB", palette=palette)
 plt.title("Average Latency vs Workload")
@@ -44,7 +44,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, "avg_latency_vs_workload.png"))
 plt.close()
 
-# ---------------- Plot 2: P95 Latency vs Workload ----------------
+# Plot 2: P95 Latency vs Workload
 plt.figure(figsize=(10,6))
 sns.barplot(data=df, x="Workload", y="P95Latency(ms)", hue="DB", palette=palette)
 plt.title("P95 Latency vs Workload")
@@ -55,7 +55,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, "p95_latency_vs_workload.png"))
 plt.close()
 
-# ---------------- Plot 3: Throughput vs Workload ----------------
+# Plot 3: Throughput vs Workload
 plt.figure(figsize=(10,6))
 sns.barplot(data=df, x="Workload", y="Throughput(q/s)", hue="DB", palette=palette)
 plt.title("Throughput vs Workload")
@@ -66,7 +66,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, "throughput_vs_workload.png"))
 plt.close()
 
-# ---------------- Per-Metric Breakdowns ----------------
+# Per-Metric Breakdowns
 if "Metric" in df.columns:
     unique_metrics = df["Metric"].dropna().unique()
     for metric_name in unique_metrics:

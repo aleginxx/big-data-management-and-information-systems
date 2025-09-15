@@ -6,15 +6,13 @@ from matplotlib import cm
 import numpy as np
 import os
 
-# ---------------- Load data ----------------
 df = pd.read_csv("data_loader/milvus_data_loader_stats.csv")
 df_batches = df[df["BatchID"] != "TOTAL"]
 
-# Create output folder if it doesn't exist
 output_dir = "./plots"
 os.makedirs(output_dir, exist_ok=True)
 
-# ---------------- Plot 1: Batch Time vs Batch Size ----------------
+# Plot 1: Batch Time vs Batch Size
 plt.figure(figsize=(10,6))
 sns.lineplot(
     data=df_batches,
@@ -35,7 +33,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, "batch_time_vs_batch_size.png"))
 plt.close()
 
-# ---------------- Plot 2: CPU Usage vs Batch ----------------
+# Plot 2: CPU Usage vs Batch 
 plt.figure(figsize=(10,6))
 sns.lineplot(data=df_batches, x="BatchID", y="CPU(%)", hue="ThreadCount")
 plt.title("CPU Usage During Batch Inserts")
@@ -46,7 +44,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, "cpu_usage_vs_batch.png"))
 plt.close()
 
-# ---------------- Plot 3: Memory Usage vs Batch ----------------
+# Plot 3: Memory Usage vs Batch
 plt.figure(figsize=(10,6))
 sns.lineplot(data=df_batches, x="BatchID", y="Memory(MB)", hue="ThreadCount")
 plt.title("Memory Usage During Batch Inserts")
@@ -57,7 +55,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, "memory_usage_vs_batch.png"))
 plt.close()
 
-# ---------------- Plot 4: Batch Time vs Vector Dimension ----------------
+# Plot 4: Batch Time vs Vector Dimension 
 plt.figure(figsize=(10,6))
 sns.barplot(data=df_batches, x="VectorDim", y="BatchTime(s)", hue="ThreadCount")
 plt.title("Batch Insertion Time vs Vector Dimension")
@@ -65,7 +63,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, "batch_time_vs_vector_dim.png"))
 plt.close()
 
-# ---------------- Plot 5: Distribution of Batch Times ----------------
+# Plot 5: Distribution of Batch Times
 plt.figure(figsize=(10,6))
 sns.violinplot(
     data=df_batches,
@@ -79,7 +77,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(output_dir, "batch_time_distribution.png"))
 plt.close()
 
-# ---------------- Plot 6: 3D Surface - BatchSize x ThreadCount vs Avg Batch Time ----------------
+# Plot 6: 3D Surface - BatchSize x ThreadCount vs Avg Batch Time
 subset = df_batches.groupby(["BatchSize", "ThreadCount"])["BatchTime(s)"].mean().reset_index()
 X = subset["BatchSize"].values
 Y = subset["ThreadCount"].values

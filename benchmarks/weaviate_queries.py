@@ -9,18 +9,16 @@ from weaviate.collections.classes.filters import Filter
 import json
 import random
 
-# ---------------- Parameters ----------------
-CSV_FILE = "results_weaviate_hf.csv"
+CSV_FILE = "results_hf.csv"
 QUERY_LIMIT = 5
-FILTER_VALUES = ["World", "Sports", "Business", "Sci/Tech"]  # actual labels
+FILTER_VALUES = ["World", "Sports", "Business", "Sci/Tech"] 
 WORKLOAD_TYPES = {
     "small": 100,
     "medium": 1000,
-    "full": None  # will be replaced with full dataset length
+    "full": None 
 }
 VEC_FILE = "./weaviate_vector_data.json"
 
-# ---------------- Load query vectors ----------------
 if not os.path.exists(VEC_FILE):
     raise FileNotFoundError(f"{VEC_FILE} not found! Run the data loader first.")
 
@@ -41,7 +39,6 @@ def get_query_categories(size: int):
     sampled_indices = random.sample(range(len(all_vectors)), size)
     return [all_categories[i] for i in sampled_indices]
 
-# ---------------- Connect ----------------
 client = weaviate.connect_to_local(
     host="localhost",
     port=8080,
@@ -49,7 +46,6 @@ client = weaviate.connect_to_local(
 )
 print("Connected to Weaviate")
 
-# ---------------- Setup CSV ----------------
 file_exists = os.path.isfile(CSV_FILE)
 with open(CSV_FILE, mode="a", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
@@ -60,11 +56,9 @@ with open(CSV_FILE, mode="a", newline="", encoding="utf-8") as f:
             "AvgLatency(ms)", "P95Latency(ms)", "Throughput(q/s)"
         ])
 
-# ---------------- Identify collections ----------------
 all_collections = client.collections.list_all()
 weaviate_collections = [c for c in all_collections if c.startswith("NewsArticle_")]
 
-# ---------------- Benchmark loop ----------------
 for coll_name in weaviate_collections:
     # Extract metric, dimension, and subset
     try:
@@ -88,7 +82,7 @@ for coll_name in weaviate_collections:
         print(f"Running {workload} workload")
         query_vectors = get_query_vectors(workload_size)
 
-        # ---------------- Unfiltered queries ----------------
+        # Unfiltered queries
         latencies = []
         start_all = time.perf_counter()
         for vec in tqdm(query_vectors, desc=f"{coll_name} ({metric}) no filter", unit="query", mininterval=1.0):
@@ -116,7 +110,7 @@ for coll_name in weaviate_collections:
                 f"{avg_latency:.2f}", f"{p95_latency:.2f}", f"{throughput:.2f}"
             ])
 
-        # ---------------- Filtered queries ----------------
+        # Filtered queries
         for filter_value in FILTER_VALUES:
             latencies = []
             start_all = time.perf_counter()
@@ -146,6 +140,5 @@ for coll_name in weaviate_collections:
                     f"{avg_latency:.2f}", f"{p95_latency:.2f}", f"{throughput:.2f}"
                 ])
 
-# ---------------- Disconnect ----------------
 client.close()
 print("\nBenchmarking complete. Results saved to ", CSV_FILE)

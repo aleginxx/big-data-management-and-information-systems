@@ -7,7 +7,7 @@ from tqdm import tqdm
 from pymilvus import connections, Collection, utility
 from workload import get_query_vectors, WORKLOADS
 
-CSV_FILE = "results_milvus_hf.csv"
+CSV_FILE = "results_hf.csv"
 INDEX_TYPE = "IVF_FLAT"
 NLIST = 128
 QUERY_LIMIT = 5
