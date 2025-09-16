@@ -46,9 +46,9 @@ pip install -r requirements.txt
 ### 3. Run Milvus and Weaviate in Docker
 
 #### Milvus
+Download file docker-compose.yaml from Milvus github repo: https://github.com/milvus-io/milvus/blob/master/deployments/docker/gpu/standalone/docker-compose.yml
 ```bash
-docker pull milvusdb/milvus:latest
-docker run -d --name milvus   -p 19530:19530   -p 9091:9091   milvusdb/milvus:latest
+docker compose up -d
 ```
 
 #### Weaviate

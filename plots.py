@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import os
 
-# ===================== IEEE STYLE SETTINGS =====================
+# IEEE Standards
 mpl.rcParams.update({
     "font.family": "Times New Roman",  # IEEE font
     "font.size": 8,                     # base font size
@@ -18,14 +18,11 @@ mpl.rcParams.update({
 })
 FIGSIZE = (3.5, 2.5)  # Single-column IEEE figure size in inches
 
-# ===================== OUTPUT FOLDER ===========================
 os.makedirs("plots/results", exist_ok=True)
-
-# ===================== LOAD DATA ===============================
 loader_df = pd.read_csv("data_loader/loader_stats.csv")
 results_df = pd.read_csv("benchmarks/results_hf.csv")
 
-# ===================== PREPROCESSING ===========================
+# Different name per DB for inner product metric
 results_df["Metric"] = results_df["Metric"].replace({"DOT": "IP"})
 
 loader_df["throughput"] = loader_df["BatchSize"] / loader_df["BatchTime(s)"]
@@ -40,16 +37,13 @@ loader_summary = (
     .rename(columns={"BatchTime(s)": "latency"})
 )
 
-# ===================== SAVE FUNCTION ===========================
 def save_plot(fig, name):
     fig.savefig(f"plots/results/{name}.eps", bbox_inches="tight", format="eps")
     plt.close(fig)
 
-# ===================== PLOTTING SETTINGS =======================
 linestyles = ['-', '--', '-.', ':']
 markers = ['o', 's', '^', 'd']
 
-# ===================== DATA LOADING PLOTS ======================
 
 # Insertion throughput vs Batch Size
 fig, ax = plt.subplots(figsize=FIGSIZE)
@@ -112,13 +106,10 @@ ax.set_ylabel("Memory (MB)")
 ax.legend()
 save_plot(fig, "memory_usage_during_insertion")
 
-# ===================== QUERY PLOTS ============================
-
 width = 0.35
 metrics = results_df["Metric"].unique()
 x = range(len(metrics))
 
-# Helper function for grayscale colors: first DB light gray
 def get_color(i):
     return "0.7" if i == 0 else "0"
 
